@@ -28,7 +28,6 @@ public function index()
 	public function check()
 	{
 
-
 		$login    = $this->input->post('login');
 		$password = $this->input->post('password');
 
