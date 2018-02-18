@@ -9,11 +9,32 @@ class Admin extends CI_Controller
         $this->load->model('Admin_model');
 	}
 
+	
+
 public function index()
 	{  
+		
+		
 		if($this->session->userdata('session_name') != true)
 		{
+					if (!isset($_SERVER['PHP_AUTH_USER']) ||
+    ($this->input->post('login') =='admin'  && $this->input->post('password') == $_SERVER['PHP_AUTH_USER'])) {
+      header('WWW-Authenticate: Basic realm="Test Authentication System"');
+    header('HTTP/1.0 401 Unauthorized');
+    echo "Вы должны ввести корректный логин и пароль для получения доступа к ресурсу \n";
+    exit;
+
+} else {
+    echo "<p>Добро пожаловать: " . htmlspecialchars($_SERVER['PHP_AUTH_USER']) . "<br />";
+    echo "Предыдущий логин: " . htmlspecialchars($this->input->post('password'));
+    echo "<form  method='post'>\n";
+    echo "<input type='hidden' name='password' value='1' />\n";
+    echo "<input type='hidden' name='login' value=\"" . htmlspecialchars($_SERVER['PHP_AUTH_USER']) . "\" />\n";
+    echo "<input type='submit' value='Авторизоваться повторно' />\n";
+    echo "</form></p>\n";
+}
 		$this->load->view('admin');
+
 	    }
 	    else
 	    {
@@ -25,9 +46,10 @@ public function index()
 
 
 
+
+
 	public function check()
 	{
-
 
 
 		$login    = $this->input->post('login');
@@ -42,7 +64,8 @@ public function index()
 			redirect(base_url('index.php/admin/index'));
 		}
 
-	}
+	
+}
 
 	public function show()
 	{
